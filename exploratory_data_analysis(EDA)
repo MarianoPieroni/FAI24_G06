@@ -1,0 +1,82 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+from sklearn.preprocessing import StandardScaler, LabelEncoder
+from sklearn.model_selection import train_test_split
+
+df = pd.read_csv('student_habits_performance.csv')
+
+print("Dataset")
+print(f"\n-Dimensoes:{df.shape}")
+print(f"\n-Colunas:{df.columns}")
+print(f"\n-valores nulos:{df.isnull().sum().sum()}")
+print(f"\n-duplicados:{df.duplicated().sum()}")
+
+
+df['Desempenho'] = pd.cut(df['exam_score'],
+                          bins=[0,50,70,100],
+                          labels=['25-50','51-70','71-100'])
+print("Variavel target:")
+print(df['Desempenho'].value_counts())
+
+
+categorical_columns =['gender', 'diet_quality', 'parental_education_level',
+    'internet_quality', 'extracurricular_participation', 'part_time_job']
+
+#VERIFICAÇAO DOS VALORES UNICOS
+""" print(df['gender'].unique())
+print(df['diet_quality'].unique())
+print(df['parental_education_level'].unique())
+print(df['internet_quality'].unique())
+print(df['extracurricular_participation'].unique())
+print(df['part_time_job'].unique()) """
+
+for col in categorical_columns:
+    if col in df.columns:
+        encoded_col=col+'_encoded'
+        le = LabelEncoder()
+        df[encoded_col] = le.fit_transform(df[col].astype(str))
+        print(f"-{encoded_col}")
+
+encoded_cols = [col for col in df.columns 
+                if col.endswith('_encoded') and col in df.columns]
+
+#VERIFICAÇAO DOS VALORES UNICOS DAS COLUNAS ENCODED
+""" print(df['gender_encoded'].unique())
+print(df['diet_quality_encoded'].unique())
+print(df['parental_education_level_encoded'].unique())
+print(df['internet_quality_encoded'].unique())
+print(df['extracurricular_participation_encoded'].unique())
+print(df['part_time_job_encoded'].unique()) """
+
+print("\nColunas codificadas criadas:")
+print(encoded_cols)
+
+final_features = [
+     # 1. Features numéricas(8)
+    'age', 'study_hours_per_day', 'social_media_hours', 'netflix_hours',
+    'attendance_percentage', 'sleep_hours', 'exercise_frequency', 'mental_health_rating',
+    
+    # 2. Features categóricas codificadas (6)
+    #'gender_encoded', 'diet_quality_encoded', 'parental_education_level_encoded',
+    #'internet_quality_encoded', 'extracurricular_participation_encoded', 'part_time_job_encoded',
+]+ encoded_cols
+
+print("FEATURES SELECIONADAS:")
+print(f"-Total: {len(final_features)} features")
+print(f"-Numericas: {len([f for f in final_features if 'encoded' not in f])}")
+print(f"-Categoricas codificadas: {len([f for f in final_features if 'encoded' in f])}")
+
+
+x=df[final_features]
+y=df['Desempenho']
+
+X_train, X_test, y_train, y_test = train_test_split(
+    x, y, test_size=0.2, random_state=42, stratify=y
+)
+
+print("DIVISAO DOS DADOS:")
+print(f"-Treino: {X_train.shape[0]} amostras")
+print(f"-Teste: {X_test.shape[0]} amostras")
+print(f"-Features: {X_train.shape[1]}")
