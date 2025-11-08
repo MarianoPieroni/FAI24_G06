@@ -15,10 +15,15 @@ print(f"\n-duplicados:{df.duplicated().sum()}")
 
 
 df['Desempenho'] = pd.cut(df['exam_score'],
-                          bins=[0,50,70,100],
-                          labels=['25-50','51-70','71-100'])
-print("Variavel target:")
-print(df['Desempenho'].value_counts())
+                          bins=[0, 25, 50, 70, 100],
+                          labels=['0-25', '26-50', '51-70', '71-100'],
+                          include_lowest=True,
+                          right=True)
+                      
+
+distribuicao = df['Desempenho'].value_counts().sort_index()
+print(distribuicao)  
+
 
 
 categorical_columns =['gender', 'diet_quality', 'parental_education_level',
@@ -72,11 +77,85 @@ print(f"-Categoricas codificadas: {len([f for f in final_features if 'encoded' i
 x=df[final_features]
 y=df['Desempenho']
 
+#verificaçaos iniciais de x e y 
+""" print("FEATURES (x):")
+print(f"Colunas: {final_features}")
+print(f"Forma: {x.shape}")
+
+print("TARGET (y):")
+print(f"Valores unicos: {y.unique()}")
+print(f"Forma: {y.shape}") """
+
+#"test_size=0.2"-20% dos dados para teste 80% para o treino
+#"random_state=42"-garante mesma divisão sempre
+#"stratify=y"-Mantém a MESMA PROPORÇÃO das categorias em treino e teste
 X_train, X_test, y_train, y_test = train_test_split(
     x, y, test_size=0.2, random_state=42, stratify=y
 )
 
+# Verificar se a divisão foi boa
+""" print("VERIFICACAO DA DIVISAO:")
+
+print("\nDISTRIBUIÇAO NO DATASET COMPLETO:")
+print(y.value_counts(normalize=True).round(3))
+
+print("\nDISTRIBUIÇAO NO CONJUNTO DE TREINO:")
+print(y_train.value_counts(normalize=True).round(3))
+
+print("\nDISTRIBUIÇAO NO CONJUNTO DE TESTE:")
+print(y_test.value_counts(normalize=True).round(3)) """
+
 print("DIVISAO DOS DADOS:")
 print(f"-Treino: {X_train.shape[0]} amostras")
 print(f"-Teste: {X_test.shape[0]} amostras")
-print(f"-Features: {X_train.shape[1]}")
+print(f"-Features: {X_train.shape[1]}") 
+
+scaler = StandardScaler()
+X_train_scaled = scaler.fit_transform(X_train)
+X_test_scaled = scaler.transform(X_test)
+print("NORMALIZAÇÃO:")
+print("Dados normalizados para K-NN")
+
+faixa_para_intervalo = {
+    '0-25': '0-25 pontos',
+    '26-50': '26-50 pontos',
+    '51-70': '51-70 pontos', 
+    '71-100': '71-100 pontos'
+}
+print("\nMAPEAMENTO FAIXA->INTERVALO:")
+for faixa, intervalo in faixa_para_intervalo.items():
+    print(f"  {faixa} -> {intervalo}")
+
+
+""" def verificar_preparacao():
+    checks = {
+        "Dataset carregado": not df.empty,
+        "Target criada": 'Desempenho' in df.columns,
+        "Features selecionadas": len(final_features) > 0,
+        "Dados divididos": len(X_train) > 0 and len(X_test) > 0,
+        "Normalização feita": hasattr(scaler, 'mean_'),
+        "Mapeamento definido": len(faixa_para_intervalo) == 4
+    }
+    
+    print("\nVERIFICAÇÃO FINAL DA PREPARAÇÃO:")
+    for check, status in checks.items():
+        icon = "sim" if status else "nao"
+        print(f"   {icon} {check}")
+    
+    return all(checks.values())
+
+# Executar verificação
+pronto_para_implementar = verificar_preparacao()
+
+if pronto_para_implementar:
+    print("\n TUDO PRONTO! Podemos implementar a Opção 1! ")
+else:
+    print("\n  Alguns elementos precisam ser preparados primeiro.") """
+""" print("RESUMO DO ESTADO ATUAL:")
+print(f"Total de alunos: {len(df)}")
+print(f"Distribuição das faixas:")
+print(df['Desempenho'].value_counts().sort_index())
+print(f"Proporções:")
+for faixa in ['0-25', '26-50', '51-70', '71-100']:
+    prop = (df['Desempenho'] == faixa).mean()
+    print(f"  - {faixa}: {prop:.1%}") """
