@@ -70,7 +70,7 @@ def preparar_dados():
     scaler = StandardScaler()
     X_train_scaled = scaler.fit_transform(X_train)
     X_test_scaled = scaler.transform(X_test)
-    print("NORMALIZAÇÃO:")
+    print("NORMALIZACAO:")
     print("Dados normalizados para K-NN")
 
     faixa_para_intervalo = {

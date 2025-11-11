@@ -22,7 +22,7 @@ def train_models(x_train,x_trainscaled, y_train):
     return rf_model,knn_model
 
 def evaluate_models(rf_model, knn_model, X_test, X_test_scaled, y_test):
-    print("\n Avaliaçao dos modelos")
+    print("\n Avaliacao dos modelos")
 
     y_pred_rf=rf_model.predict(X_test)
     y_pred_knn=knn_model.predict(X_test_scaled)
