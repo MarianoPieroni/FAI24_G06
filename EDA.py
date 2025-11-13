@@ -42,7 +42,7 @@ def preparar_dados():
     encoded_cols = [col for col in df.columns 
                     if col.endswith('_encoded') and col in df.columns]
 
-    print("\nColunas codificadas criadas:")
+    print(f"\nColunas codificadas criadas:{len(encoded_cols)}")
     print(encoded_cols)
 
     final_features = [
@@ -50,11 +50,11 @@ def preparar_dados():
         'attendance_percentage', 'sleep_hours', 'exercise_frequency', 'mental_health_rating',
     ] + encoded_cols
 
-    print("FEATURES SELECIONADAS:")
-    print(f"-Total: {len(final_features)} features")
+    print(f"Total de features selecionadas: {len(final_features)}")
     print(f"-Numericas: {len([f for f in final_features if 'encoded' not in f])}")
     print(f"-Categoricas codificadas: {len([f for f in final_features if 'encoded' in f])}")
-
+    print("\nFeatures selecionadas:")
+    print(final_features)
 
     x=df[final_features]
     y=df['Desempenho']
@@ -73,6 +73,8 @@ def preparar_dados():
     X_test_scaled = scaler.transform(X_test)
     print("NORMALIZACAO:")
     print("Dados normalizados para K-NN")
+    print(f"- X_train_scaled shape: {X_train_scaled.shape}")
+    print(f"- X_test_scaled shape: {X_test_scaled.shape}")
 
     faixa_para_intervalo = {
         '0-25': '0-25 pontos',

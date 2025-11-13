@@ -17,7 +17,6 @@ def load_trained_models():
 def predict_student_performance(student_data, rf_model, knn_model, scaler, faixa_para_intervalo):
     """
     Faz previsao para um aluno
-    student_data: dict ou DataFrame com as features
     """
     # Converter para DataFrame se for dict
     if isinstance(student_data, dict):

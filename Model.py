@@ -31,8 +31,8 @@ def optimize_hyperparameters(x_train, x_trainscaled, y_train):
     )
     
     rf_search.fit(x_train, y_train)
-    print(f"Best Random Forest Parameters: {rf_search.best_params_}")
-    print(f"Best Random Forest Score: {rf_search.best_score_:.3f}")
+    print(f"Melhores parâmetros: {rf_search.best_params_}")
+    print(f"Melhor accuracy (CV): {rf_search.best_score_:.3f}")
     
     # Otimização para K-NN
     print("\n2. OPTIMIZING K-NN...")
@@ -46,7 +46,7 @@ def optimize_hyperparameters(x_train, x_trainscaled, y_train):
         KNeighborsClassifier(),
         knn_param_grid,
         cv=5,
-        scoring='AVALIAÇÃO COMPARATIVA DOS MODELOS',
+        scoring='accuracy',
         n_jobs=-1
     )
     
@@ -54,7 +54,7 @@ def optimize_hyperparameters(x_train, x_trainscaled, y_train):
     print(f"Best K-NN Parameters: {knn_search.best_params_}")
     print(f"Best K-NN Score: {knn_search.best_score_:.3f}")
     
-    return rf_search.best_estimator_, knn_search.best_estimator_, rf_search.best_params_, knn_search.best_params_
+    return rf_search.best_estimator_,knn_search.best_estimator_, rf_search.best_params_, knn_search.best_params_
 
 def train_models(x_train, x_trainscaled, y_train, use_optimization=True):
     """Treina modelos com ou sem otimização de hiperparâmetros"""
@@ -86,7 +86,6 @@ def train_models(x_train, x_trainscaled, y_train, use_optimization=True):
     return rf_model, knn_model, rf_best_params, knn_best_params
 
 def comprehensive_evaluation(rf_model, knn_model, X_test, X_test_scaled, y_test):
-    """Avaliação abrangente com múltiplas métricas"""
     print("\n" + "="*60)
     print("COMPREHENSIVE MODEL EVALUATION")
     print("="*60)
@@ -143,7 +142,6 @@ def comprehensive_evaluation(rf_model, knn_model, X_test, X_test_scaled, y_test)
     }
 
 def compare_model_performance(evaluation_results, rf_best_params, knn_best_params):
-    """Comparação detalhada do desempenho dos modelos"""
     print("\n" + "="*60)
     print("MODEL COMPARISON & HYPERPARAMETER ANALYSIS")
     print("="*60)
