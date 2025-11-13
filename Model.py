@@ -46,7 +46,7 @@ def optimize_hyperparameters(x_train, x_trainscaled, y_train):
         KNeighborsClassifier(),
         knn_param_grid,
         cv=5,
-        scoring='accuracy',
+        scoring='AVALIAÇÃO COMPARATIVA DOS MODELOS',
         n_jobs=-1
     )
     

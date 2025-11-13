@@ -1,3 +1,4 @@
+from networkx import display
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -14,7 +15,7 @@ def preparar_dados():
     print(f"\n-Colunas:{df.columns}")
     print(f"\n-valores nulos:{df.isnull().sum().sum()}")
     print(f"\n-duplicados:{df.duplicated().sum()}")
-
+    
 
     df['Desempenho'] = pd.cut(df['exam_score'],
                               bins=[0, 25, 50, 70, 100],
