@@ -16,6 +16,18 @@ def preparar_dados():
     print(f"\n-valores nulos:{df.isnull().sum().sum()}")
     print(f"\n-duplicados:{df.duplicated().sum()}")
     
+    if df.isnull().sum().sum() > 0:
+     # Preencher numéricos com mediana
+     numeric_cols = df.select_dtypes(include=[np.number]).columns
+     df[numeric_cols] = df[numeric_cols].fillna(df[numeric_cols].median())
+    
+    # Preencher categóricos com moda
+    categorical_cols = df.select_dtypes(include=['object']).columns
+    for col in categorical_cols:
+        df[col] = df[col].fillna(df[col].mode()[0])
+
+    print(f"\n-verificar valores nulos:{df.isnull().sum().sum()}")
+ 
 
     df['Desempenho'] = pd.cut(df['exam_score'],
                               bins=[0, 25, 50, 70, 100],
