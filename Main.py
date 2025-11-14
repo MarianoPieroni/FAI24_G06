@@ -65,8 +65,8 @@ def main():
     
     print("\nSISTEMA AVANÇADO PRONTO PARA USO!")
 
-
-    print("\n6. UNSUPERVISED K-MEANS")
+    print("=" * 30)
+    print("\nUNSUPERVISED K-MEANS")
     unsupervised_()
 
 
