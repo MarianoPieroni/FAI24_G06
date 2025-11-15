@@ -1,10 +1,9 @@
 # src/03_prediction_system.py
 import pandas as pd
 import joblib
-from sklearn.model_selection import GridSearchCV
 
 def load_trained_models():
-    """Carrega os modelos treinados"""
+
     try:
         rf_model = joblib.load('../models/random_forest_model.pkl')
         knn_model = joblib.load('../models/knn_model.pkl')
