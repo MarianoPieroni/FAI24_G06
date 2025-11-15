@@ -10,17 +10,17 @@ def optimize_hyperparameters(x_train, x_trainscaled, y_train):
     # Otimização para Random Forest
     print("\n1. OPTIMIZING RANDOM FOREST...")
     rf_param_grid = {
-        'n_estimators': [50, 100, 200],
-        'max_depth': [5, 10, 15, None],
-        'min_samples_split': [2, 5, 10],
-        'min_samples_leaf': [1, 2, 4],
+        'n_estimators': range(50, 301),
+        'max_depth': range(5, 21),
+        'min_samples_split': range(2, 16),
+        'min_samples_leaf': range(1, 6),
         'bootstrap': [True, False]
-    }
+   }
     
     rf_search = RandomizedSearchCV(
         RandomForestClassifier(random_state=42),
         rf_param_grid,
-        n_iter=20,
+        n_iter=100,
         cv=5,
         scoring='accuracy',
         n_jobs=-1,
@@ -34,9 +34,9 @@ def optimize_hyperparameters(x_train, x_trainscaled, y_train):
     # Otimização para K-NN
     print("\n2. OPTIMIZING K-NN...")
     knn_param_grid = {
-        'n_neighbors': [3, 5, 7, 9, 11, 15],
-        'weights': ['uniform', 'distance'],
-        'metric': ['euclidean', 'manhattan', 'minkowski']
+    'n_neighbors':  range(3, 31),
+    'weights': ['uniform', 'distance'],
+    'metric': ['euclidean', 'manhattan', 'minkowski']
     }
     
     knn_search = RandomizedSearchCV(
